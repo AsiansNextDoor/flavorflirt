@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if data %}
+        <table class="table">
+            <thead>
+                {% for col in data[0].keys() %}<th>{{ col }}</th>{% endfor %}
+            </thead>
+            <tbody>
+                {% for poopy in data %}
+                    <tr>
+                        {% for key,value in poopy.items() %}
+                            {% if not key == "video_url" or key == "thumb" %}
+                                <td>
+                                    {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <div>
+        <strong>
+            {{data['name']}}
+        </strong>
+        {% if data[description] %}
+            <h3>{{data[description]}}</h3>
+        {% endif %}
+        {% if data['video_url'] %}
+            <iframe src = "{{data['video_url']}}"></iframe>
+        {% endif %}
+        {% if data['thumbnail_url'] %}
+            <img src = "{{data['thumbnail_url']}}">
+        {% endif %}
+    </div>
+{% endblock content %}
