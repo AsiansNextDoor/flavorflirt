@@ -1,0 +1,24 @@
+.h2 {
+    font-weight: bold;
+    color: black;
+    font-size: 150px;
+}
+
+.h4 {
+    color: black;
+    font-size: 40px;
+}
+
+.flirt_head {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.flirt_text {
+    font-size: 40px;
+    /* font-weight: bold; */
+}
+
+.gray_border {
+    border-color: #676767
+}

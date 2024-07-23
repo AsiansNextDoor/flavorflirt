@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if data %}
-        <table class="table">
-            <thead>
-                {% for col in data[0].keys() %}<th>{{ col }}</th>{% endfor %}
-            </thead>
-            <tbody>
-                {% for poopy in data %}
-                    <tr>
-                        {% for key,value in poopy.items() %}
-                            {% if not key == "video_url" or key == "thumb" %}
-                                <td>
-                                    {{ value }}
-                                </td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+{% if dishes %}
+
+<div class="container">
+    <div class="row">
+        {% for dish in dishes %}
+        <a class="col mx-3 my-3 py-3 justify-content-center border rounded-3 border-2 gray_border text-decoration-none text-dark"
+            href="{{ url_for('dish_by_id', dish_id=dish['id_']) }}">
+            {% for key in display.keys() %}
+            {% if key == "thumbnail_url" %}
+            <img width="200px" height="200px" src="{{ dish[key] }}" class="mx-auto d-block object-fit-cover rounded-2"
+                alt="{{key}}">
+            {% elif key == "name" %}
+            <p class="mt-3" style="font-size: 22px">
+                {{ dish[key] }}
+            </p>
+            {% endif %}
+            {% endfor %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+There's nothing here
+{% endif %}
 {% endblock content %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row align-items-center vw-50 " style="margin-top: 15vh">
+    <div class="container-fluid d-flex justify-content-center">
+        <h2 class="h2">
+            FlavorFlirt
+        </h2>
+    </div>
+    <div class="container-fluid d-flex justify-content-center">
+        <h4 class="h4">
+            For the foodies.
+        </h4>
+    </div>
+
+    <div class="d-flex justify-content-center " style="margin-top: 10vh">
+
+        <form action='{{ url_for("post_index") }}' method="post">
+            <section>
+                <label for="diet">Select dietary needs</label>
+                <select name="diet" id="diet">
+                    <option value="" disabled selected>Any</option>
+                    {% for row in tags %}
+                    {% if row["type"] == "dietary" %}
+                    <option value="{{row['id']}}">{{row["display_name"]}}</option>
+                    {% endif %}
+                    <!-- change unnecessary dietary conditions -->
+                    {% endfor %}
+                    <!-- <option value="64469">Vegetarian</option>
+                <option value="8091756">Keto</option>
+                <option value="64465">Gluten-free</option>
+                <option value="64488">Kid-friendly</option>
+                <option value="64463">Dairy-free</option> -->
+                </select>
+                <label for="cuisine">Select preferred cuisine</label>
+                <select name="cuisine" id="cuisine">
+                    <option value="" disabled selected>Any</option>
+                    {% for row in tags %}
+                    {% if row["type"] == "cuisine" %}
+                    <option value="{{row['id']}}">{{row["display_name"]}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="row d-flex justify-content-center align-content-center">
+                    <input name="keywords" id="keywords" class="form-control me-2" type="search" placeholder="Search">
+                    <input class="btn btn-outline-secondary" type="submit" value="Submit query"></button>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Developed by:</h1>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6 d-flex justify-content-center">
+            <div class="card rounded-2" style="width: 18rem;">
+                <img class="rounded-top-2" src="{{url_for('static', filename='dreadhead2.jpg')}}">
+                <div class="container">
+                    <h3>Zixuan Yin</h3>
+                    <p>
+                        <a href="mailto:yinz@carleton.edu">yinz@carleton.edu</a>
+                    </p>
+                    <p>
+                        Age: 19
+                    </p>
+                    <p>
+                        Sex: Male
+                    </p>
+                    <p>
+                        O Block, Chicago IL
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-center">
+            <div class="card rounded-2" style="width: 18rem;">
+                <img class="rounded-top-2" src="{{url_for('static', filename='dreadhead1.jpeg')}}">
+                <div class="container">
+                    <h3>Arnold Wang</h3>
+                    <p>
+                        <a href="mailto:wanga10@carleton.edu">wanga10@carleton.edu</a>
+                    </p>
+                    <p>
+                        Age: 18
+                    </p>
+                    <p>
+                        Sex: Male
+                    </p>
+                    <p>
+                        Atlanta, GA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -2,6 +2,11 @@
 
 import csv
 import json
+from crud import read
 
-def read_food(filename: str):
-    pass
+def split_words(s):
+    s.replace(",", " ")
+    s.replace("_", " ")
+    s.replace(";", " ")
+    s = s.split()
+    return s

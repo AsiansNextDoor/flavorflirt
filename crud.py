@@ -4,7 +4,7 @@
 import csv
 import logging
 import sqlite3
-
+import sys
 import click
 
 
@@ -60,19 +60,35 @@ def create(db_name: str, datafile: str) -> None:
 # @click.command(help="Read all records from the specified table")
 # @click.argument("db_name")
 # @click.option("--table", "-t", default="dishes")
-def read(db_name: str, table: str) -> None:
-    """Read all records"""
+def read(db_name: str, table: str):
     with sqlite3.connect(db_name) as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM {table};")
         d = []
-        keys = cursor.description
-        print(keys)
+        keys = [desc[0] for desc in cursor.description]
         for record in cursor:
             row = {}
             for k, v in zip(keys, record):
-                pass
+                row[k] = v
+            d.append(row)
+        return d
 
+def find_user(db_name: str, table: str, username: str, password: str):
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
+        query = f"SELECT * FROM {table} WHERE username = ? AND password = ?;"
+        cursor.execute(query, (username, password))
+        return not cursor.fetchone() is None
+    
+def add_user(db_name: str, table: str, username: str, password: str):
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
+        query = f"SELECT * FROM {table} WHERE username = ?;"
+        cursor.execute(query, (username,))
+        if (cursor.fetchone() is None):
+            cursor.execute(f"INSERT INTO users values('{username}', '{password}');")
+            return True
+        return False
 
 @click.command()
 @click.argument("db_name")
