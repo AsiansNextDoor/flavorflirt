@@ -1,136 +1,142 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="ms-5 my-4">
-<div>
-    <h1 class="d-flex">
-        {{dish['name']}}
-    </h1>
-    <br>
-    {% if dish[description] %}
-    <h3>{{dish[description]}}</h3>
-    <br>
-    {% endif %}
-    <br>
-    <div>
-        {% if dish['video_url'] %}
-        <video controls>
-            <source src="{{ dish['video_url'] }}">
-        </video>
-        {% endif %}
+<div class="my-3">
+    <div class="container">
+        <div class="row justify-content-start">
+
+            <div class="container bg-white" style="max-width:500px; min-width: 20vw">
+                <h1 class="d-flex text-center">
+                    {{dish['name']}}
+                </h1>
+                {% if dish['description'] %}
+                <p class="pt-4"><em>{{dish['description']}}</em></p>
+                {% endif %}
+                <div class=" mt-4 embed-responsive-item embed-responsive d-flex justify-content-center">
+                    {% if dish['video_url'] and dish['video_url'][-5:] != ".m3u8"%}
+                    <video controls class="media">
+                        <source src="{{ dish['video_url'] }}">
+                    </video>
+                    {% else %}
+                    <img src="{{ dish['thumbnail_url'] }}" class=" d-block object-fit-cover media" alt="{{dish['name']}}">
+                    {% endif %}
+                </div>
+                <table class="table d-flex table-borderless mt-4">
+                    <tr>
+                        <td>
+                            {% if dish['prep_time'] %}
+                            Prep time: <strong>{{dish['prep_time']}} min</strong>
+                            {% else %}
+                            Prep time: N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['cook_time'] %}
+                            Cook time: <strong>{{dish['cook_time']}} min</strong>
+                            {% else %}
+                            <p>Cook time: N/A </p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['prep_time'] and dish['cook_time'] %}
+                            Total time: <strong>{{dish['prep_time'] + dish['cook_time']}} min</strong>
+                            {% else %}
+                            <p>Total time: N/A </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if dish['calories'] %}
+                            <strong>{{dish['calories']}}</strong> calories
+                            {% else %}
+                            <p>N/A calories</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['fat'] %}
+                            <strong>{{dish['fat']}}g</strong> total fat
+                            {% else %}
+                            <p>N/A total fat</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['carbohydrates'] %}
+                            <strong>{{dish['carbohydrates']}}g</strong> total carbs
+                            {% else %}
+                            <p>N/A total carbs</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if dish['sugar'] %}
+                            <strong>{{dish['sugar']}}g</strong> sugar
+                            {% else %}
+                            <p>N/A sugar</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['fiber'] %}
+                            <strong>{{dish['fiber']}}g</strong> fiber
+                            {% else %}
+                            <p>N/A fiber</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dish['protein'] %}
+                            <strong>{{dish['protein']}}g</strong> protein
+                            {% else %}
+                            <p>N/A protein</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="container" style="max-width:400px; min-width: 20vw">
+                <div class="bg-white">
+                    <div class="col d-flex justify-content-center mb-3">
+                        <form action="{{ url_for('post_flirt') }}" method="post">
+                            <input type="hidden" id="action" name="action" value="save">
+                            <input type="hidden" id="dish" name="dish" value="{{ dish }}">
+                            <input class="btn btn-outline-success" type="submit" value="Save">
+                        </form>
+                    </div>
+                    <h4>Ingredients</h4>
+                    <ul>
+                        {% for ig in ingredient["ingredient_sections"][0]["ingredients"] %}
+                        <li>
+                            {% if ig["primary_unit"]["quantity"] %}
+                            {{ ig["primary_unit"]["quantity"] }}
+                            {% if ig["primary_unit"]["display"] %}
+                            {{ ig["primary_unit"]["display"] }}
+                            {% endif %}
+                            {% endif %}
+                            {% if ig["metric_unit"]["quantity"] %}
+                            / {{ ig["metric_unit"]["quantity"]}}
+                            {% if ig["metric_unit"]["display"] %}
+                            {{ ig["metric_unit"]["display"]}}
+                            {% endif %}
+                            {% endif %}
+                            {% if ig["extra_comment"]%}
+                            {{ ig["name"] }}, {{ ig["extra_comment"] }}
+                            {% else %}
+                            {{ ig["name"] }}
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <h4>Recipe</h4>
+                    <ol>
+                        {% for fart in ingredient["instructions"] %}
+                        {% for smelly in fart.values( ) %}
+                        <li>{{smelly}}</li>
+                        {% endfor %}
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <table class="table d-flex table-borderless">
-        <tr>
-            <td>
-                {% if dish['prep_time'] %}
-                    Prep time: <strong>{{dish['prep_time']}} min</strong>
-                {% else %}
-                    Prep time: N/A
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['cook_time'] %}
-                Cook time: <strong>{{dish['cook_time']}} min</strong>
-                {% else %}
-                <p>Cook time: N/A </p>
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['prep_time'] and dish['cook_time'] %}
-                Total time: <strong>{{dish['prep_time'] + dish['cook_time']}} min</strong>
-                {% else %}
-                <p>Total time: N/A </p>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {% if dish['calories'] %}
-                <strong>{{dish['calories']}}</strong> calories
-                {% else %}
-                <p>N/A calories</p>
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['fat'] %}
-                <strong>{{dish['fat']}}g</strong> total fat
-                {% else %}
-                <p>N/A total fat</p>
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['carbohydrates'] %}
-                <strong>{{dish['carbohydrates']}}g</strong> total carbs
-                {% else %}
-                <p>N/A total carbs</p>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {% if dish['sugar'] %}
-                <strong>{{dish['sugar']}}g</strong> sugar
-                {% else %}
-                <p>N/A sugar</p>
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['fiber'] %}
-                <strong>{{dish['fiber']}}g</strong> fiber
-                {% else %}
-                <p>N/A fiber</p>
-                {% endif %}
-            </td>
-            <td>
-                {% if dish['protein'] %}
-                <strong>{{dish['protein']}}g</strong> protein
-                {% else %}
-                <p>N/A protein</p>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
-</div>
-
-<div>
-    <h4>Ingredients</h4>
-    <ul>
-        {% for ig in ingredient["ingredient_sections"][0]["ingredients"] %}
-        <li>
-            {% if ig["primary_unit"]["quantity"] %}
-                {{ ig["primary_unit"]["quantity"] }}
-                {% if ig["primary_unit"]["display"] %}
-                    {{ ig["primary_unit"]["display"] }}
-                {% endif %}
-            {% endif %}
-            {% if ig["metric_unit"]["quantity"] %}
-                / {{ ig["metric_unit"]["quantity"]}}
-                {% if ig["metric_unit"]["display"] %}
-                    {{ ig["metric_unit"]["display"]}}
-                {% endif %}
-            {% endif %}
-            {% if ig["extra_comment"]%}
-                {{ ig["name"] }}, {{ ig["extra_comment"] }}
-            {% else %}
-                {{ ig["name"] }}
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-
-</div>
-
-<div>
-    <h4>Recipe</h4>
-    <ol>
-        {% for fart in ingredient["instructions"] %}
-            {% for smelly in fart.values(   ) %}
-            <li>{{smelly}}</li>
-            {% endfor %}
-        {% endfor %}
-    </ol>
-</div>
-</div>
 {% endblock content %}

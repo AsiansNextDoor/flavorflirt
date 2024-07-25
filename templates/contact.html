@@ -1,50 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Developed by:</h1>
-<br>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6 d-flex justify-content-center">
-            <div class="card rounded-2" style="width: 18rem;">
-                <img class="rounded-top-2" src="{{url_for('static', filename='dreadhead2.jpg')}}">
-                <div class="container">
-                    <h3>Zixuan Yin</h3>
-                    <p>
-                        <a href="mailto:yinz@carleton.edu">yinz@carleton.edu</a>
-                    </p>
-                    <p>
-                        Age: 19
-                    </p>
-                    <p>
-                        Sex: Male
-                    </p>
-                    <p>
-                        O Block, Chicago IL
-                    </p>
+<div class="my-3">
+    <div class="container">
+        <h1 class="text-center mb-2">Developed by:</h1>
+        <div class="container">
+            <div class="row justify-content-center ">
+                <div class="card rounded-2 mx-2 text-center" style="width: 18rem;">
+                    <img class="rounded-2 mt-3 mx-1" src="static/zixuan.jpg">
+                    <div class="mt-3">
+                        <h3>Zixuan Yin</h3>
+                        <p>
+                            <a href="mailto:yinzixuansz@gmail.com">yinzixuansz@gmail.com</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 d-flex justify-content-center">
-            <div class="card rounded-2" style="width: 18rem;">
-                <img class="rounded-top-2" src="{{url_for('static', filename='dreadhead1.jpeg')}}">
-                <div class="container">
-                    <h3>Arnold Wang</h3>
-                    <p>
-                        <a href="mailto:wanga10@carleton.edu">wanga10@carleton.edu</a>
-                    </p>
-                    <p>
-                        Age: 18
-                    </p>
-                    <p>
-                        Sex: Male
-                    </p>
-                    <p>
-                        Atlanta, GA
-                    </p>
+                <div class="card rounded-2 mx-2 text-center" style="width: 18rem;">
+                    <img class="rounded-2 mt-3 mx-1" src="static/arnold.png">
+                    <div class="mt-3">
+                        <h3>Arnold Wang</h3>
+                        <p>
+                            <a href="mailto:wangarnold08@gmail.com">wangarnold08@gmail.com</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}

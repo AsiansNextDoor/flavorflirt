@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-center text-center" style="margin-top: 4vh">
+        <h1>Create an admin account</h1>
+    </div>
+
+    <div class="row align-items-center text-center" style="margin-top: 2vh">
+        <form action="{{ url_for('admin_signup') }}" method="post">
+
+            <div class="row justify-content-center align-content-center">
+                <input class="form-control" type="text" placeholder="Username" name="username" value="{{
+                    request.form.username }}" style="min-width: 20vw; max-width: 250px" required>
+            </div>
+            <div class="row justify-content-center align-content-center mt-2">
+                <input class="form-control" type="password" placeholder="Password" name="password" value="{{
+                    request.form.password }}" style="min-width: 20vw; max-width: 250px" required>
+            </div>
+            <div class="row justify-content-center align-content-center mt-2">
+                <input class="form-control" type="password" placeholder="Confirm password" name="password_confirm"
+                    value="{{
+                    request.form.password_confirm }}" style="min-width: 20vw; max-width: 250px" required>
+            </div>
+
+
+            <div>
+                <button class="btn btn-dark orange-acc mt-4 px-5" type="submit">Sign up</button>
+            </div>
+        </form>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+            {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -6,6 +6,7 @@ import logging
 import sqlite3
 import sys
 import click
+import ast
 
 
 @click.command(help="Create a database from the CSV file")
@@ -76,6 +77,13 @@ def read(db_name: str, table: str):
 def find_user(db_name: str, table: str, username: str, password: str):
     with sqlite3.connect(db_name) as conn:
         cursor = conn.cursor()
+        query = f"SELECT * FROM {table} WHERE username = ?;"
+        cursor.execute(query, (username,))
+        return not cursor.fetchone() is None
+
+def verify_user(db_name: str, table: str, username: str, password: str):
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
         query = f"SELECT * FROM {table} WHERE username = ? AND password = ?;"
         cursor.execute(query, (username, password))
         return not cursor.fetchone() is None
@@ -83,12 +91,29 @@ def find_user(db_name: str, table: str, username: str, password: str):
 def add_user(db_name: str, table: str, username: str, password: str):
     with sqlite3.connect(db_name) as conn:
         cursor = conn.cursor()
-        query = f"SELECT * FROM {table} WHERE username = ?;"
+        cursor.execute(f"INSERT INTO {table} values('{username}', '{password}');")
+    return True
+
+def modify(db_name: str, table: str, username: str, lists):
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
+        query = f"DELETE FROM {table} WHERE username = ?"
         cursor.execute(query, (username,))
-        if (cursor.fetchone() is None):
-            cursor.execute(f"INSERT INTO users values('{username}', '{password}');")
-            return True
-        return False
+        insert_query = f"INSERT INTO {table} (username, lists) VALUES (?, ?)"
+        cursor.execute(insert_query, (username, str(lists)))
+    return True
+
+def read_list(db_name: str, table: str, username: str):
+    with sqlite3.connect(db_name) as conn:
+        cursor = conn.cursor()
+        query = f"SELECT lists FROM {table} WHERE username = ?"
+        cursor.execute(query, (username,))
+        row = cursor.fetchone()
+        
+        if row:
+            return ast.literal_eval(row[0])
+        else:
+            return False
 
 @click.command()
 @click.argument("db_name")

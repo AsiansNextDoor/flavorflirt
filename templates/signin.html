@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div class="container">
-    <h1>Please sign in</h1>
-    <br>
-    <form action="{{ url_for('signin') }}" method="post">
-    <input type="text" placeholder="Username" name="username" value="{{
-        request.form.username }}">
-        <input type="password" placeholder="Password" name="password" value="{{
-        request.form.password }}">
-    <input class="btn btn-default" type="submit" value="Sign in">
-    </form>
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}
-    {% endif %}
+    <div class="row align-items-center text-center" style="margin-top: 4vh">
+        <h1>Sign into your FlavorFlirt account</h1>
+    </div>
+    <div class="row align-items-center justify-content-center text-center" style="margin-top: 2vh;">
+        <form action="{{ url_for('signin') }}" method="post" class="col-12 col-md-6">
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
+            </div>
+            <div class="form-group mt-2">
+                <input class="form-control" type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
+            </div>
+            <button class="btn btn-dark orange-acc mt-4 px-5" type="submit">Sign in</button>
+            {% if error %}
+                <p class="error text-danger"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
 </div>
+
 {% endblock content %}

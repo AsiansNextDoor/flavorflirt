@@ -1,12 +1,12 @@
 .h2 {
     font-weight: bold;
     color: black;
-    font-size: 150px;
+    font-size: 8vw;
 }
 
 .h4 {
     color: black;
-    font-size: 40px;
+    font-size: 4vw;
 }
 
 .flirt_head {
@@ -19,6 +19,57 @@
     /* font-weight: bold; */
 }
 
-.gray_border {
-    border-color: #676767
+.black_border {
+    border-color: black
+}
+
+#myVideo {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 150vw;
+    min-height: 150vh;
+    object-fit:cover;
+    background-size:cover;
+    filter: brightness(40%) blur(2px);
+    
+  }
+
+.cover {
+    object-fit:cover;
+    background-size:cover;
+    min-width: 150vw;
+    min-height: 150vh;
+}
+
+.white-text {
+    color: white
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.red-acc{
+    color: black;
+    background-color: #FF5B5B
+}
+
+.orange-acc{
+    color: black;
+    background-color: #FFAD5B
+}
+
+ol {
+    list-style-position: inside;
+    padding-left: 0;
+}​
+
+ul {
+    padding: 0;
+    list-style-type: inside;
+}
+
+.media {
+    max-width:80%; height:auto
 }

@@ -4,6 +4,8 @@ Welcome to flavorflirt
 
 To-do list:
 - Backend Data-filtering Optimization
+- Add recipe lists (normal/flirt)
+- Remember user preferences
 
 July 21, 2024
 - Keyword Search
