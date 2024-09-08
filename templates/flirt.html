@@ -34,7 +34,7 @@
                     </form>
                 </div>
                 <div class="col d-flex">
-                    <form action="{{ url_for('recipes') }}" method="post">
+                    <form action="{{ url_for('post_flirt') }}" method="post">
                         <input type="hidden" id="action" name="action" value="quit">
                         <input type="hidden" id="dish" name="dish" value="{{ dish }}">
                         <input class="btn btn-outline-danger" type="submit" value="Quit">

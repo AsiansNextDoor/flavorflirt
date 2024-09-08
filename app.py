@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ #!/usr/bin/env python3
 from flask import (
     Flask,
     make_response,
@@ -7,6 +7,7 @@ from flask import (
     redirect,
     url_for,
     abort,
+    session,
 )
 import sys
 import ast
@@ -35,8 +36,13 @@ def create_app():
 
 app = create_app()
 
+app.secret_key = b"\x87c\xed\xda\x82\xf5\xcdF]\xa7N0L\x94b3"
+
+
 @app.route("/")
 def home():
+    if session.get("username"):
+        print(session["username"])
     return render_template("home.html", dishes=app.dishes, tags=app.tags, user=app.user)
 
 
@@ -77,11 +83,17 @@ def signin():
             app.user[0] = request.form["username"]
             app.user[1] = False
             app.user[2] = read_list("recipes.db", "saved", request.form['username'])
+            session["username"] = request.form["username"]
+            session["ifadmin"] = False
+            session["recipes"] = read_list("recipes.db", "saved", request.form['username'])
             return redirect(url_for("home"))
         elif verify_user("data.db", "admins", request.form["username"], request.form["password"]):
             app.user[0] = request.form["username"]
             app.user[1] = True
             app.user[2] = read_list("recipes.db", "saved", request.form['username'])
+            session["username"] = request.form["username"]
+            session["ifadmin"] = True
+            session["recipes"] = read_list("recipes.db", "saved", request.form['username'])
             return redirect(url_for("home"))
         else:
             error = "Invalid Credentials"
@@ -128,7 +140,10 @@ def signout():
     app.user[0] = ""
     app.user[1] = False
     app.user[2] = []
-    return redirect(url_for("home"))
+    session.pop('username', None)
+    session.pop('ifadmin', None)
+    session.pop('recipes', None)
+    return render_template("home.html", dishes=app.dishes, tags=app.tags)
     
 @app.route("/recipes")
 def recipes():
@@ -136,14 +151,16 @@ def recipes():
 
 @app.post("/recipes")
 def post_recipes():
+    if not session.get("username"):
+        return redirect(url_for("home"))
     if request.form:
         fdata = dict(request.form)
         dish = ast.literal_eval(fdata["dish"])
-        saved_dishes = read_list("recipes.db", "saved", app.user[0])
+        saved_dishes = read_list("recipes.db", "saved", session["username"])
         if dish in saved_dishes:
             saved_dishes.remove(dish)
-        app.user[2] = saved_dishes
-        modify("recipes.db", "saved", app.user[0], saved_dishes)
+        session["recipes"] = saved_dishes
+        modify("recipes.db", "saved", session["username"], saved_dishes)
         return render_template("recipes.html", display=app.display, user=app.user)
     abort(404)
         
@@ -171,21 +188,23 @@ def flirt():
 
 @app.post("/flirt")
 def post_flirt():
+    if not session.get("username"):
+        return redirect(url_for("home"))
     if request.form:
         fdata = dict(request.form)
         action = fdata["action"]
         
         if action == "quit":
-            return redirect(url_for("home"))
-        elif action == "save" and app.user[0]:
+            return redirect(url_for("recipes"))
+        elif action == "save" and session["username"]:
             dish = ast.literal_eval(fdata["dish"])
-            saved_dishes = read_list("recipes.db", "saved", app.user[0])
+            saved_dishes = read_list("recipes.db", "saved", session["username"])
             if saved_dishes:
                 saved_dishes.append(dish)
             else:
                 saved_dishes = [dish]
-            app.user[2] = saved_dishes
-            modify("recipes.db", "saved", app.user[0], saved_dishes)
+            session["recipes"] = saved_dishes
+            modify("recipes.db", "saved", session["username"], saved_dishes)
         
         rdish = app.dishes[random.randint(0, len(app.dishes) - 1)]
         return render_template("flirt.html", dish=rdish, user=app.user)
